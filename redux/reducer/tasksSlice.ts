@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { TaskListResponse } from "./taskSlice";
 
 
-export type TaskSliceKey = "today" | "project" | "upcoming" | "label"
+export type TaskSliceKey = "today" | "project" | "upcoming" | "label" | "search"
 export type TasksSlice = {
     [key in TaskSliceKey]?: {
         [key: string]: TaskListResponse | []

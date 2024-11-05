@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
-import React from "react";
+import React, { FC } from "react";
 import HomeScreen from "./screen/HomeScreen";
 import UpcomingScreen from "./screen/UpcomingScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -25,10 +25,11 @@ import {
 import HeaderOption from "./components/header/HeaderOption";
 import useTheme from "./hooks/useTheme";
 import { textColor } from "./utils/theme";
+import SearchPage, { SearchPageProps } from "./screen/SearchScreen";
 const Tab = createBottomTabNavigator();
 type menu = {
   name: string;
-  component: () => React.JSX.Element;
+  component: FC<any>;
 };
 const menus: menu[] = [
   {
@@ -38,6 +39,10 @@ const menus: menu[] = [
   {
     name: "Upcoming",
     component: UpcomingScreen,
+  },
+  {
+    name: "Search",
+    component: SearchPage,
   },
 ];
 export default function App() {
@@ -62,6 +67,8 @@ const CustomApp = () => {
               iconName = focused ? "today" : "today-outline"; // Icon for Home
             } else if (route.name === "Upcoming") {
               iconName = focused ? "calendar" : "calendar-outline"; // Icon for Settings
+            } else if (route.name === "Search") {
+              iconName = focused ? "search" : "search"; // Icon for Settings
             }
 
             // Return the icon component
