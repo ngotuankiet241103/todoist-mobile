@@ -30,7 +30,8 @@ export default function requestApi<T>(endpoint:string,method:string,body?:T,isRe
         // add token when call request api
         instance.interceptors.request.use(
            async  (config) => {
-                const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJudGsyNDExMDNAZ21haWwuY29tIiwiaWQiOiIxIiwiaWF0IjoxNzMwNTE3NzM5LCJleHAiOjE3MzExMjI1Mzl9.cejYQYrINC-dia9AWI07ZBCU4JutN37lCyuB0RP7kzI"
+                    const token = JSON.parse(await AsyncStorage.getItem("accessToken") ?? "");
+                
                 if(!token && isRedirect){
                     const url = window.location.pathname;
                     const param = encodeURIComponent(url);
@@ -56,8 +57,8 @@ export default function requestApi<T>(endpoint:string,method:string,body?:T,isRe
                 if( error.response.status === 401){
                     
                     try {
-                        const refeshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJudGsyNDExMDNAZ21haWwuY29tIiwiaWQiOiIxIiwiaWF0IjoxNzI4NTU4MDYxLCJleHAiOjE3MjkxNjI4NjF9.T6d2SrYHbau1r1ovPROrHqkEAQCA3pihq1-TmLxsTjM";
-                        
+                      
+                        const refeshToken = JSON.parse(await AsyncStorage.getItem("refreshToken") ?? "");
                         const data = {
                             refresh_token: refeshToken
                         }
@@ -100,8 +101,8 @@ export type Token = {
 export const setToken = async (token : Token) => {
     try {
         if(!token.access_token || !token.refresh_token) return;
-        await AsyncStorage.setItem('accessToken', token.access_token);
-        await AsyncStorage.setItem('refreshToken', token.refresh_token);
+         AsyncStorage.setItem('accessToken', JSON.stringify(token.access_token) );
+         AsyncStorage.setItem('refreshToken', JSON.stringify(token.refresh_token));
         console.log('Tokens stored successfully');
       } catch (error) {
         console.log('Could not store tokens', error);
@@ -147,6 +148,8 @@ export const methodPost = async <T>(endpoint: string,data : T ) => {
     const config = {
         headers
     }
+    console.log(`${env.EXPO_PUBLIC_API}${endpoint}`);
+    
     const response = await axios.post(`${env.EXPO_PUBLIC_API}${endpoint}`,JSON.stringify(data),config);
     return response;
     

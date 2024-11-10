@@ -1,8 +1,9 @@
+import { Text } from "react-native";
 
 const ErrorNoti = ({message } : {message:string | undefined}) => {
     return (
     
-       <span className='text-red-500 block px-2'>{message}</span>
+       <Text style={{color: 'red',paddingHorizontal: 4}}>{message}</Text>
     );
 };
 

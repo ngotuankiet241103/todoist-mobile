@@ -17,6 +17,7 @@ import DetaiTask from "../components/task/DetaiTask";
 import { useSelector } from "react-redux";
 import { state } from "../redux/store";
 import axios from "axios";
+import requestApi, { updateMethod } from "../helper/api";
 
 interface Task {
   id: number;
@@ -104,14 +105,8 @@ const SearchPage: React.FC<SearchPageProps> = ({ navigation }) => {
       "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWVuQGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTczMDc5OTExNCwiZXhwIjoxNzMxNDAzOTE0fQ.NnNS2HxxO0yOZKAlHFAwB6mDxBQ6j8wiGaewAq91hFI";
     setLoadingMore(true);
     try {
-      const response = await axios.get(
-        `http://192.168.1.8:8080/api/v1/tasks/all?page=${page}&limit=6`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await requestApi(`/tasks/all?page=${page}&limit=6`,"GET","")
+     
       setTasks((prevTasks) => [...prevTasks, ...response.data]);
       setShowCompletedTasks(true);
     } catch (error) {
@@ -129,14 +124,15 @@ const SearchPage: React.FC<SearchPageProps> = ({ navigation }) => {
       "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWVuQGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTczMDc5OTExNCwiZXhwIjoxNzMxNDAzOTE0fQ.NnNS2HxxO0yOZKAlHFAwB6mDxBQ6j8wiGaewAq91hFI";
 
     try {
-      const response = await axios.get(
-        "http://192.168.1.8:8080/api/v1/projects",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await requestApi("/projects","GET","");
+      // axios.get(
+      //   "http://192.168.1.8:8080/api/v1/projects",
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
       console.log(response.data);
       setProjects([allProjectsOption, ...response.data]);
     } catch (error) {
@@ -212,17 +208,18 @@ const SearchPage: React.FC<SearchPageProps> = ({ navigation }) => {
       }));
 
       // API call to update the task's completion status on the server
-      const response = await axios.put(
-        `http://192.168.1.8:8080/api/v1/tasks/completed`,
-        { id: taskId },
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWVuQGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTczMDc5OTExNCwiZXhwIjoxNzMxNDAzOTE0fQ.NnNS2HxxO0yOZKAlHFAwB6mDxBQ6j8wiGaewAq91hFI`,
-          },
-        }
-      );
+      const response = await updateMethod("/tasks/completed",{id: taskId}) 
+      // axios.put(
+      //   `http://192.168.1.8:8080/api/v1/tasks/completed`,
+      //   { id: taskId },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWVuQGdtYWlsLmNvbSIsImlkIjoiMSIsImlhdCI6MTczMDc5OTExNCwiZXhwIjoxNzMxNDAzOTE0fQ.NnNS2HxxO0yOZKAlHFAwB6mDxBQ6j8wiGaewAq91hFI`,
+      //     },
+      //   }
+      // );
 
-      if (response.status === 200) {
+      if (response &&  response.status === 200) {
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task.id.toString() === taskId ? { ...task, completed: true } : task

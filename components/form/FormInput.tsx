@@ -1,10 +1,11 @@
 import React from 'react';
+import { View } from 'react-native';
 
 const FormInput = ({children} : {children: React.ReactNode}) => {
     return (
-        <div className="relative px-2 py-1 border border-gray-300 rounded-md flex items-end h-[58px]">
+        <View style={{position: 'relative',paddingVertical: 2,paddingHorizontal: 1}} >
             {children}
-        </div>
+        </View>
     );
 };
 

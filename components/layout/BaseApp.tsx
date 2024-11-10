@@ -47,7 +47,7 @@ const BaseApp = ({page,children,label} : BaseWeb) => {
         // }
     }
     useEffect(() =>  {
-        dispatch(userThunk());
+       
         dispatch(labelThunk());
         dispatch(priorityThunk());
     

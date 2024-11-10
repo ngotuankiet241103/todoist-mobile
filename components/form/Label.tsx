@@ -1,12 +1,13 @@
 import React from 'react';
+import { StyleProp, Text, TextStyle } from 'react-native';
 type Label = {
-    className: string,
+    style?: StyleProp<TextStyle>,
     htmlfor: string,
     children: React.ReactNode | string
 }
-const Label = ({className,htmlfor,children}:Label) => {
+const Label = ({style,htmlfor,children}:Label) => {
     return (
-        <label htmlFor={htmlfor} className={`${className}`}>{children}</label>
+        <Text style={style}>{children}</Text>
     );
 };
 
